@@ -39,6 +39,14 @@
       "image": "./assets/ramen/kojiro.jpg",
       "rating": 6,
       "comment": "Perfect for a cold night."
+    },
+    {
+      "name": "Mi Goreng",
+      "restaurant": "Grocery Store",
+      "image": "https://m.media-amazon.com/images/I/71B4YNvwCtL._SL1500_.jpg",
+      "rating": "10",
+      "comment": "Ballin on a budget",
+      "id": 6
     }
   ]
 }
