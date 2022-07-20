@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const ratingDisplay = document.querySelector('#rating-display');
     const commentDisplay = document.querySelector('#comment-display');
     const newRamenForm = document.querySelector('#new-ramen');
+    const editRamenForm = document.querySelector('#edit-ramen');
 
     // given a ramen object, add it to the ramen menu
     const addRamenToMenu = ramen => {
@@ -22,8 +23,12 @@ document.addEventListener("DOMContentLoaded", () => {
         ramenMenu.appendChild(ramenImage);
     };
 
-    // given a ramen object, load it into the ramen-details div
+    // given a ramen object, load it into the ramen-details div & edit-ramen form
     const loadRamenDetails = ramen => {
+        ramenDetail.dataset.id = ramen.id;
+        
+        // ramen-details
+
         const image = ramenDetail.querySelector('img');
         image.src = ramen.image;
         image.alt = ramen.name;
@@ -37,16 +42,25 @@ document.addEventListener("DOMContentLoaded", () => {
         ratingDisplay.textContent = ramen.rating;
 
         commentDisplay.textContent = ramen.comment;
+
+        // edit-ramen form
+
+        editRamenForm.querySelector('#new-rating').value = ramen.rating;
+        editRamenForm.querySelector('#new-comment').value = ramen.comment;
     };
 
     /*
         CODE
     */
 
-    // populate the ramen-menu with ramen images
+    // populate the ramen-menu with ramen images, and load the first one into ramen-detail
     fetch(SERVER)
     .then(resp => resp.json())
-    .then(ramens => ramens.forEach(addRamenToMenu));
+    .then(ramens => ramens.forEach((ramen, index) => {
+        addRamenToMenu(ramen);
+
+        if (index == 0) { loadRamenDetails(ramen); }
+    }));
 
     // listen for clicks on the images, and populate the ramen-detail section
     ramenMenu.addEventListener('click', event => {
@@ -75,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 restaurant: event.target.restaurant.value,
                 image: event.target.image.value,
                 rating: event.target.rating.value,
-                comment: event.target.querySelector('#new-comment').value
+                comment: event.target.comment.value
             })
         })
         .then(resp => resp.json())
@@ -86,5 +100,33 @@ document.addEventListener("DOMContentLoaded", () => {
             // clear the form
             event.target.reset();
         })
+    });
+
+    // listen for submissions of the edit ramen form
+    editRamenForm.addEventListener('submit', event => {
+        // prevent default reloading of page
+        event.preventDefault();
+
+        // grab the ramen id
+        const id = ramenDetail.dataset.id;
+
+        // submit patch request
+        fetch(`${SERVER}/${id}`, {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rating: event.target.querySelector('#new-rating').value,
+                comment: event.target.querySelector('#new-comment').value
+            })
+        })
+        .then(resp => resp.json())
+        .then(ramen => {{
+            // update the rating & comment on the page
+            // I could use loadRamenDetails - but why modify & reload more than necessary?
+            ratingDisplay.textContent = ramen.rating;
+            commentDisplay.textContent = ramen.comment;  
+        }});
     });
 });

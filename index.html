@@ -34,19 +34,37 @@
     Insert comment here
   </p>
 
+  <!-- Edit Ramen Form -->
+  <form id="edit-ramen">
+    <h4>Update the Featured Ramen</h4>
+    <label for="new-rating">Rating: </label>
+    <input type="number" name="new-rating" id="new-rating" />
+    <label for="new-comment">Comment: </label>
+    <textarea name="new-comment" id="new-comment"></textarea>
+    <input type="submit" value="Update" />
+  </form>
+
   <!-- New Ramen Form -->
+  <!--
+    Note from Malcolm:
+      I modified the ids & names from new-rating & new-comment to
+      just rating & comment. The edit-ramen form uses the new-rating
+      syntax, which makes sense. It doesn't make sense to have two
+      elements with the same ID, so I changed this one. For consistency
+      I also renamed the rest of the IDs to not have 'new' in them.
+  -->
   <form id="new-ramen">
     <h4>Add New Ramen</h4>
     <label for="name">Name: </label>
-    <input type="text" name="name" id="new-name" />
+    <input type="text" name="name" id="name" />
     <label for="restaurant">Restaurant: </label>
-    <input type="text" name="restaurant" id="new-restaurant" />
+    <input type="text" name="restaurant" id="restaurant" />
     <label for="image">Image: </label>
-    <input type="text" name="image" id="new-image" />
+    <input type="text" name="image" id="image" />
     <label for="rating">Rating: </label>
-    <input type="number" name="rating" id="new-rating" />
-    <label for="new-comment">Comment: </label>
-    <textarea name="new-comment" id="new-comment"></textarea>
+    <input type="number" name="rating" id="rating" />
+    <label for="comment">Comment: </label>
+    <textarea name="comment" id="comment"></textarea>
     <input type="submit" value="Create" />
   </form>
 
