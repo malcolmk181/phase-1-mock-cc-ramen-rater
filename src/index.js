@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const commentDisplay = document.querySelector('#comment-display');
     const newRamenForm = document.querySelector('#new-ramen');
     const editRamenForm = document.querySelector('#edit-ramen');
+    const deleteRamenForm = document.querySelector('#delete-ramen');
 
     // given a ramen object, add it to the ramen menu
     const addRamenToMenu = ramen => {
@@ -128,5 +129,38 @@ document.addEventListener("DOMContentLoaded", () => {
             ratingDisplay.textContent = ramen.rating;
             commentDisplay.textContent = ramen.comment;  
         }});
+    });
+
+    // listen for submissions of the delete ramen form
+    deleteRamenForm.addEventListener('submit', event => {
+        // prevent default reloading of page
+        event.preventDefault();
+
+        // grab the ramen id
+        const id = ramenDetail.dataset.id;
+
+        // submit delete request
+        fetch(`${SERVER}/${id}`, {
+            method: "DELETE",
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(() => {
+            // grab the ramen id
+            const id = ramenDetail.dataset.id;
+
+            // remove the deleted ramen from the menu
+            Array.from(ramenMenu.children).forEach(child => {
+                if (child.dataset.id === id) { child.remove(); }
+            });
+
+            // load first ramen from the menu
+            const newRamenToLoad = ramenMenu.children[0];
+
+            fetch(`${SERVER}/${newRamenToLoad.dataset.id}`)
+            .then(resp => resp.json())
+            .then(loadRamenDetails);
+        });
     });
 });

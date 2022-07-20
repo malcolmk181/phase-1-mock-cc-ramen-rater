@@ -93,6 +93,14 @@ input[type="submit"]:active {
   background-color: gray;
 }
 
+input[type="submit"].delete {
+  background-color: darkred;
+}
+
+input[type="submit"].delete:active {
+  background-color: red;
+}
+
 form h4 {
   width: 100%;
   padding: 0.25rem;
